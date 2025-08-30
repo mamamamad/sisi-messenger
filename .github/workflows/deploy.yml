@@ -12,6 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       #
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -19,6 +25,12 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p 2585 ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to server
-        run: |
-          ssh -i ~/.ssh/id_ed25519 -p 2585 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "cd /var/www/sisia.ir && touch hi.txt"
+      - name: Deploy React app via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.PORT }}
+          source: "dist/*"
+          target: "/var/www/sisia.ir/dist"
