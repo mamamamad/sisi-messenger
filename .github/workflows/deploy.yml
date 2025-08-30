@@ -16,12 +16,10 @@ jobs:
 
       - name: Setup SSH key
         run: |
-          mkdir -p ~/.ssh
-          cat << 'EOF' > ~/.ssh/id_rsa
-          ${{ secrets.SERVER_SSH_KEY }}
-          EOF
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          echo "---- First 5 lines ----"
+          head -n 5 ~/.ssh/id_rsa || true
+          echo "---- Last 5 lines ----"
+          tail -n 5 ~/.ssh/id_rsa || true
 
       - name: Test SSH connection
         run: ssh -vvv -p 2585 -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo connected"
