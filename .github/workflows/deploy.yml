@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main # Run only on master branch
+      - master # Run only on master branch
 
 jobs:
   build:
@@ -28,3 +29,4 @@ jobs:
           source: "dist/*"
           target: "/var/www/sisia.ir/dist"
           port: 2585
+#test
