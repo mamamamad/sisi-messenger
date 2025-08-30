@@ -14,6 +14,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Debug SSH
+        run: ssh -v -i ~/.ssh/id_rsa youruser@your.server.com "echo connected"
+
       - name: Install dependencies
         run: npm install
 
