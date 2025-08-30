@@ -22,7 +22,6 @@ jobs:
 
       - name: Add server host key
         run: |
-          mkdir -p ~/.ssh
           ssh-keyscan -p 2585 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Test SSH connection
