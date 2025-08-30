@@ -83,17 +83,7 @@ const LoginPage = () => {
             color: baseTokens.token.primary10,
           }}
         >
-          SISIA
-        </Title>
-        <Title
-          level={2}
-          style={{
-            textAlign: "center",
-            marginBottom: 30,
-            color: baseTokens.token.primary10,
-          }}
-        >
-          ورود به سیستم
+          Sisia ورود به سیستم
         </Title>
 
         <Spin spinning={status === "loading"}>
