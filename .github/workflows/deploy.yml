@@ -16,10 +16,9 @@ jobs:
 
       - name: Setup SSH key
         run: |
-          echo "---- First 5 lines ----"
-          head -n 5 ~/.ssh/id_rsa || true
-          echo "---- Last 5 lines ----"
-          tail -n 5 ~/.ssh/id_rsa || true
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: Test SSH connection
         run: ssh -vvv -p 2585 -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo connected"
