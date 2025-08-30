@@ -1,54 +1,24 @@
-name: Deploy React App
+name: Deploy
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: ["main", "master"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout code
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
 
-      # 2️⃣ Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      # 3️⃣ Install dependencies
-      - name: Install dependencies
-        run: npm install
-
-      # 4️⃣ Build React app
-      - name: Build React app
-        run: npm run build
-
-      # 5️⃣ Setup SSH key and known hosts
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p 2585 ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
 
-      # 6️⃣ Test SSH connection
-      - name: Test SSH connection
-        run: ssh -o StrictHostKeyChecking=yes -p 2585 -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo connected"
-
-      # 7️⃣ Deploy to server using scp
-      - name: Deploy React app via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: 2585
-          source: "build/*"
-          target: "/var/www/sisia.ir/dist"
+      - name: Deploy to server
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -p 2585 SERVER_USER@SERVER_IP "cd /var/www/sisia.ir && git pull"
