@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-#
+      #
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -21,4 +21,4 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -i ~/.ssh/id_ed25519 -p 2585 SERVER_USER@SERVER_IP "cd /var/www/sisia.ir && git pull"
+          ssh -p 2585 -i ~/.ssh/id_ed25519 -p 2585 SERVER_USER@SERVER_IP "cd /var/www/sisia.ir && git pull"
