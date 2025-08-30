@@ -21,4 +21,4 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -p 2585 -i ~/.ssh/id_ed25519 -p 2585 SERVER_USER@SERVER_IP "cd /var/www/sisia.ir && git pull"
+          ssh -i ~/.ssh/id_ed25519 -p 2585 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "cd /var/www/sisia.ir && git pull"
